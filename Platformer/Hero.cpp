@@ -79,7 +79,7 @@ void Hero::Collision(bool axis,Map &m) {
 				coins++;
 			}
 			if (m.TileMap[j][i] == 'S' && !axis) {
-				pos.left = 14; pos.top = 220;
+				pos.left = 33; pos.top = 220;
 			}
 			if (m.TileMap[j][i] == 'B' && !axis) {
 				if (dy > 0) {

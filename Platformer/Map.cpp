@@ -11,7 +11,7 @@ Map::Map(std::string name) {
 void Map::drawmap(sf::RenderWindow& window) {
 	sf::Sprite tile;
 	sf::Texture map;
-	map.loadFromFile("jungle.png");
+	map.loadFromFile("files//jungle.png");
 	tile.setTexture(map);
 	for (int i = 0; i < 17; i++) {
 		for (int j = 0; j < TileMap[i].getSize(); j++) {

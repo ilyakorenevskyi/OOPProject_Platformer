@@ -6,33 +6,34 @@ using namespace sf;
 int main()
 {
 	View view;
-	std::vector <Map> levels;
-	for (int i = 1; i <= 2; i++) {
-		levels.push_back(Map("level"+std::to_string(i)));
-	}
-	int curr_map = 2;
-	Font ouders;
-	ouders.loadFromFile("font.ttf");
 	sf::err().rdbuf(NULL);
 	sf::RenderWindow window(sf::VideoMode(480,272), "Dangerous Adventure");
-	AnimationControl hero_anim;
-	int pos = 0;
-	Texture adventurer,forest,cristal_t;
+	Texture adventurer_t,forest_t,cristal_t;
 	Sprite background,cristal;
-	adventurer.loadFromFile("adventurer_1.png");
-	cristal_t.loadFromFile("cristal.png");
+	adventurer_t.loadFromFile("files//adventurer_1.png");
+	cristal_t.loadFromFile("files//cristal.png");
 	cristal.setTexture(cristal_t);
 	cristal.setPosition(15, 5);
 	cristal.setScale(0.9, 0.9);
-	hero_anim.create("idle", adventurer, IntRect(0, 0, 22, 32), 0.005, 4);
-	hero_anim.create("walk", adventurer, IntRect(0, 32, 20, 30), 0.008, 5);
-	hero_anim.create("jump", adventurer, IntRect(0, 64, 22, 30), 0.005, 3);
-	forest.loadFromFile("forest_bg.png");
-	background.setTexture(forest);
+	Font ouders;
+	ouders.loadFromFile("files//font.ttf");
+	AnimationControl hero_anim;
+	hero_anim.create("idle", adventurer_t, IntRect(0, 0, 22, 32), 0.005, 4);
+	hero_anim.create("walk", adventurer_t, IntRect(0, 32, 20, 30), 0.008, 5);
+	hero_anim.create("jump", adventurer_t, IntRect(0, 64, 22, 30), 0.005, 3);
+	forest_t.loadFromFile("files//forest_bg.png");
+	background.setTexture(forest_t);
 	background.setScale(0.5, 0.5);
 	background.setPosition(0, 0);
 	Hero hero(hero_anim);
 	Clock clock;
+	Font counter_f;
+	counter_f.loadFromFile("files//font.ttf");
+	std::vector <Map> levels;
+	for (int i = 1; i <= 2; i++) {
+		levels.push_back(Map("level" + std::to_string(i)));
+	}
+	int curr_map = 2;
 	sf::Text cristal_count;
 	cristal_count.setFont(ouders);
 	cristal_count.setScale(0.3, 0.3);

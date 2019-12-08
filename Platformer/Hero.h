@@ -6,7 +6,7 @@ class Hero
 {
 	public:
 	float dx, dy;
-	sf::FloatRect rect;
+	sf::FloatRect pos;
 	bool onGround;
 	sf::Sprite sprite;
 	float currFrame;

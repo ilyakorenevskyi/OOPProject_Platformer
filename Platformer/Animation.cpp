@@ -7,24 +7,26 @@ void Animation::tick(float t) {
 	if (reverse) sprite.setTextureRect(reverse_frame[currFrame]);
 	else frame[currFrame];
 }
+Animation::Animation() {
+	currFrame = 0;
+	playing = true;
 
+}
 Animation::Animation(sf::Texture& texture, sf::IntRect pos, float speed, int count){
 	this->speed = speed;
 	sprite.setTexture(texture);
 	currFrame = 0;
-	playing = false;
+	playing = true;
 	reverse = false;
 	for (int i = 0; i < count; i++) {
 		frame.push_back(sf::IntRect(pos.left + i * pos.width, pos.top, pos.width, pos.height));
 		reverse_frame.push_back(sf::IntRect(pos.left + (i + 1) * pos.width, pos.top, -pos.width, pos.height));
 	}
 }
-Animation::~Animation()
-{
-}
+
 void AnimationControl::create(sf::String anim_name, sf::Texture& texture, sf::IntRect pos, float speed, int count) {
-	anim[anim_name] = Animation(texture, pos, speed, count);
 	currAnim = anim_name;
+	anim[anim_name] = Animation(texture, pos, speed, count);
 }
 void AnimationControl::draw(sf::RenderTarget& window, int x, int y) {
 	anim[currAnim].sprite.setPosition(x, y);

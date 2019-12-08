@@ -1,14 +1,14 @@
 #include "Animation.h"
 
 void Animation::tick(float t) {
-	if (!playing) return;
+	if (!playing) { return; currFrame = 0; }
 	currFrame += speed * t;
-	currFrame = (int)currFrame % frame.size();
+	if (currFrame > frame.size()) currFrame = 0;
 	if (reverse) sprite.setTextureRect(reverse_frame[currFrame]);
-	else frame[currFrame];
+	else sprite.setTextureRect(frame[currFrame]);
+	return;
 }
-Animation::Animation() {
-	
+AnimationControl::AnimationControl() {
 
 }
 Animation::Animation(sf::Texture& texture, sf::IntRect pos, float speed, int count){
@@ -21,8 +21,11 @@ Animation::Animation(sf::Texture& texture, sf::IntRect pos, float speed, int cou
 		frame.push_back(sf::IntRect(pos.left + i * pos.width, pos.top, pos.width, pos.height));
 		reverse_frame.push_back(sf::IntRect(pos.left + (i + 1) * pos.width, pos.top, -pos.width, pos.height));
 	}
+	int a;
 }
+Animation::Animation() {
 
+}
 void AnimationControl::create(sf::String anim_name, sf::Texture& texture, sf::IntRect pos, float speed, int count) {
 	currAnim = anim_name;
 	anim[anim_name] = Animation(texture, pos, speed, count);

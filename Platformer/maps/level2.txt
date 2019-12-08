@@ -7,7 +7,7 @@ I                         W
 I                        DW
 I                        DW
 I                        DW
-BBBB      BB    B    B   BW
+B         BB    B    B   BW
 I       B                 W
 I                         W
 I    BB   SSSSSSSSSSSSS   W

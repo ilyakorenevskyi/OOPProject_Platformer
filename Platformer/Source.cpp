@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Hero.h"
+#include "Menu.h"
 using namespace sf;
-
 int main()
 {
 	View view;
@@ -30,6 +30,8 @@ int main()
 	Font counter_f;
 	counter_f.loadFromFile("files//font.ttf");
 	std::vector <Map> levels;
+	Menu main_menu;
+	main_menu.open = true;
 	for (int i = 1; i <= 2; i++) {
 		levels.push_back(Map("level" + std::to_string(i)));
 	}
@@ -39,36 +41,55 @@ int main()
 	cristal_count.setScale(0.3, 0.3);
 	cristal_count.setCharacterSize(50);
 	cristal_count.setPosition({ 30 ,3});
+	Texture texture;
+	Sprite sprite;
+	texture.loadFromFile("files//start.png");
+	sprite.setTexture(texture);
+	sprite.setScale(0.25, 0.25);
+	sprite.setPosition(182, 150);
 	while (window.isOpen())
 	{
-		cristal_count.setString(std::to_string(hero.coins));
-		float t = clock.getElapsedTime().asMicroseconds();
-		clock.restart();
-		t = t/1000;
-		if (t > 100) t = 20;
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-		if (Keyboard::isKeyPressed(Keyboard::A)) {
-			hero.setPressed("A");
-		}
-		if (Keyboard::isKeyPressed(Keyboard::D)) {
-			hero.setPressed("D");
-		}
-		if(Keyboard::isKeyPressed(Keyboard::Space)){
-			if (hero.onGround) {
-				hero.setPressed("Space");
+		if (!main_menu.open) {
+			cristal_count.setString(std::to_string(hero.coins));
+			float t = clock.getElapsedTime().asMicroseconds();
+			clock.restart();
+			t = t / 1000;
+			if (t > 100) t = 20;
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
 			}
+			if (Keyboard::isKeyPressed(Keyboard::A)) {
+				hero.setPressed("A");
+			}
+			if (Keyboard::isKeyPressed(Keyboard::D)) {
+				hero.setPressed("D");
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Space)) {
+				if (hero.onGround) {
+					hero.setPressed("Space");
+				}
+			}
+			hero.update(t, levels[curr_map - 1]);
+			window.draw(background);
+			levels[curr_map - 1].drawmap(window);
+			hero.draw(window);
+			window.draw(cristal);
+			window.draw(cristal_count);
 		}
-		hero.update(t,levels[curr_map-1]);
-		window.draw(background);
-		levels[curr_map - 1].drawmap(window);
-		hero.draw(window);
-		window.draw(cristal);
-		window.draw(cristal_count);
+		else {
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+			window.clear();
+			window.draw(background);
+			main_menu.draw(window);
+		}
 		window.display();
 	}
 

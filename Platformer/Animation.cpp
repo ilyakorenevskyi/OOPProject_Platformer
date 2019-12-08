@@ -8,8 +8,7 @@ void Animation::tick(float t) {
 	else frame[currFrame];
 }
 Animation::Animation() {
-	currFrame = 0;
-	playing = true;
+	
 
 }
 Animation::Animation(sf::Texture& texture, sf::IntRect pos, float speed, int count){

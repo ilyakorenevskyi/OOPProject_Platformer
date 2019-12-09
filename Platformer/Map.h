@@ -5,7 +5,7 @@
 class Map
 {
 	friend class Hero;
-	sf::String TileMap[17];
+	sf::String TileMap[24];
 public:
 	Map(std::string name);
 	void drawmap(sf::RenderWindow& window);

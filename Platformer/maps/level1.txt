@@ -1,17 +1,21 @@
-I                         W
-I                         W
-I                         W
-I                         W
-I                         W
-IBBBB   B  B   B          W
-I                  B      W
-I                         W
-I                B        W
-I             B           W
-I       BBBB              W
-BBBB                      W
-I                         W
-I                         W
-I     BBBBB               W
+I                                                                 WWWWWWWWWWw
+I                                                                 WWWWWWWWWWw
+I                                                                 WWWWWWWWWWw
+I DD                                                              WWWWWWWWWWw
+I D                                                               WWWWWWWWWWw
+IBBBB                                                             WWWWWWWWWWw
+I        BBBBBBBSSSSBSSSSSSBB                                     WWWWWWWWWWw
+I                                 B                               WWWWWWWWWWw
+I                B                    B                           WWWWWWWWWWw
+I             B                                                   WWWWWWWWWWw
+I                                                                 WWWWWWWWWWw
+I                           B     B        B                      WWWWWWWWWWw
+I                       B                                         WWWWWWWWWWw
+I                                                                 WWWWWWWWWWw
+I                    B                                            WWWWWWWWWWw
 I             DDDDD        
-BBBBBBBBBBBBBBBBBBBBBBBBBBW
+BBBBBBBBBBBBBBBBBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+00000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000

@@ -1,5 +1,5 @@
 #include "Hero.h"
-
+extern float offset_x, offset_y;
 Hero::Hero(AnimationControl &animation) {
 	hp = 3;
 	coins = 0;
@@ -38,7 +38,7 @@ void Hero::keyCheck() {
 	}
 }
 void Hero::draw(sf::RenderTarget& window) {
-	animation.draw(window, pos.left, pos.top);
+	animation.draw(window, pos.left-offset_x, pos.top- offset_y);
 }
 void Hero::setPressed(std::string key) {
 	pressed_key[key] = true;
@@ -66,9 +66,13 @@ void Hero::update(float t,Map &m,sf::Music &coin) {
 	Collision(0,m,coin);
 	animation.tick(t);
 	pressed_key["A"] = pressed_key["D"] = pressed_key["Space"] = false;
+	if (pos.left >= 240)offset_x = pos.left - 480 / 2;
+	else offset_x = 0;
+	if (pos.top >= 136)offset_y = pos.top - 272 / 2;
+	else offset_y = 0;
 }
 void Hero::Collision(bool axis,Map &m,sf::Music &coin) {
-	for (int j = (pos.top) / 16; j < (pos.top + pos.height - 3) / 16 && j < 17; j++) {
+	for (int j = (pos.top) / 16; j < (pos.top + pos.height - 3) / 16 && j < 24; j++) {
 		for (int i = (pos.left) / 16; i < (pos.left + pos.width ) / 16 && i < m.TileMap[j].getSize(); i++) {
 			if ((m.TileMap[j][i] == 'W' || m.TileMap[j][i] == 'B' || m.TileMap[j][i] == 'I') && axis) //C B он не зайдет на плитку платформы
 			{
@@ -82,7 +86,11 @@ void Hero::Collision(bool axis,Map &m,sf::Music &coin) {
 				coins++;
 			}
 			if (m.TileMap[j][i] == 'S' && !axis) {
-				if(dy>0) pos.left = 33; pos.top = 220;
+				if (dy > 0) {
+					pos.left = 33;
+					pos.top = 220;
+					hp--;
+				}
 				if (dy < 0) {
 					pos.top = j * 16 + 16;
 					dy = 0;

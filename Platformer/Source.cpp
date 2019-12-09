@@ -3,19 +3,23 @@
 #include <iostream>
 #include "Hero.h"
 #include "Menu.h"
+#include "Globals.h"
+
 using namespace sf;
 int main()
 {
 	View view;
 	sf::err().rdbuf(NULL);
 	sf::RenderWindow window(sf::VideoMode(480,272), "Dangerous Adventure");
-	Texture adventurer_t,forest_t,cristal_t;
-	Sprite background,cristal;
+	Texture adventurer_t,forest_t,cristal_t,heart_t;
+	Sprite background,cristal,heart;
 	adventurer_t.loadFromFile("files//adventurer_1.png");
 	cristal_t.loadFromFile("files//cristal.png");
+	heart_t.loadFromFile("files//heart.png");
+	heart.setTexture(heart_t);
+	heart.setPosition(50, 5);
 	cristal.setTexture(cristal_t);
 	cristal.setPosition(15, 5);
-	cristal.setScale(0.9, 0.9);
 	Font ouders;
 	ouders.loadFromFile("files//font.ttf");
 	AnimationControl hero_anim;
@@ -42,16 +46,20 @@ int main()
 	for (int i = 1; i <= 2; i++) {
 		levels.push_back(Map("level" + std::to_string(i)));
 	}
-	int curr_map = 2;
-	sf::Text cristal_count;
+	int curr_map = 1;
+	sf::Text cristal_count,hp_count;
 	cristal_count.setFont(ouders);
+	hp_count.setFont(ouders);
+	hp_count.setScale(0.3, 0.3);
+	hp_count.setCharacterSize(50);
+	hp_count.setPosition({ 70 ,3 });
 	cristal_count.setScale(0.3, 0.3);
 	cristal_count.setCharacterSize(50);
-	cristal_count.setPosition({ 30 ,3});
+	cristal_count.setPosition({ 35 ,3});
 	while (window.isOpen())
 	{
 		if (!main_menu.open) {
-
+			hp_count.setString(std::to_string(hero.hp));
 			cristal_count.setString(std::to_string(hero.coins));
 			float t = clock.getElapsedTime().asMicroseconds();
 			clock.restart();
@@ -75,11 +83,14 @@ int main()
 				}
 			}
 			hero.update(t, levels[curr_map - 1],coin);
+
 			window.draw(background);
 			levels[curr_map - 1].drawmap(window);
-			hero.draw(window);
 			window.draw(cristal);
 			window.draw(cristal_count);
+			window.draw(heart);
+			window.draw(hp_count);
+			hero.draw(window);
 		}
 		else {
 			sf::Vector2i pixelPos = sf::Mouse::getPosition(window); 

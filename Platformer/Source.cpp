@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include "Hero.h"
 #include "Menu.h"
@@ -20,16 +21,22 @@ int main()
 	AnimationControl hero_anim;
 	hero_anim.create("idle", adventurer_t, IntRect(0, 0, 22, 32), 0.005, 4);
 	hero_anim.create("walk", adventurer_t, IntRect(0, 32, 20, 30), 0.008, 5);
-	hero_anim.create("jump", adventurer_t, IntRect(0, 64, 22, 30), 0.005, 3);
+	hero_anim.create("jump", adventurer_t, IntRect(0, 64, 22, 30), 0.007, 3);
 	forest_t.loadFromFile("files//forest_bg.png");
 	background.setTexture(forest_t);
 	background.setScale(0.5, 0.5);
 	background.setPosition(0, 0);
 	Hero hero(hero_anim);
+	Music main_theme;
+	main_theme.openFromFile("files//main_theme.ogg");
+	main_theme.play();
+	main_theme.setLoop(true);
 	Clock clock;
 	Font counter_f;
 	counter_f.loadFromFile("files//font.ttf");
 	std::vector <Map> levels;
+	Music coin;
+	coin.openFromFile("files//collect.wav");
 	Menu main_menu;
 	main_menu.open = true;
 	for (int i = 1; i <= 2; i++) {
@@ -41,15 +48,10 @@ int main()
 	cristal_count.setScale(0.3, 0.3);
 	cristal_count.setCharacterSize(50);
 	cristal_count.setPosition({ 30 ,3});
-	Texture texture;
-	Sprite sprite;
-	texture.loadFromFile("files//start.png");
-	sprite.setTexture(texture);
-	sprite.setScale(0.25, 0.25);
-	sprite.setPosition(182, 150);
 	while (window.isOpen())
 	{
 		if (!main_menu.open) {
+
 			cristal_count.setString(std::to_string(hero.coins));
 			float t = clock.getElapsedTime().asMicroseconds();
 			clock.restart();
@@ -72,7 +74,7 @@ int main()
 					hero.setPressed("Space");
 				}
 			}
-			hero.update(t, levels[curr_map - 1]);
+			hero.update(t, levels[curr_map - 1],coin);
 			window.draw(background);
 			levels[curr_map - 1].drawmap(window);
 			hero.draw(window);
@@ -80,11 +82,18 @@ int main()
 			window.draw(cristal_count);
 		}
 		else {
+			sf::Vector2i pixelPos = sf::Mouse::getPosition(window); 
+			sf::Vector2f pos = window.mapPixelToCoords(pixelPos);
 			sf::Event event;
 			while (window.pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed)
 					window.close();
+				if (event.type == sf::Event::MouseButtonPressed) {
+					if (event.key.code == sf::Mouse::Left) {
+						main_menu.work(pos);
+					}
+				}
 			}
 			window.clear();
 			window.draw(background);

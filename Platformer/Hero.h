@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "Animation.h"
 #include "Map.h"
 
@@ -20,7 +21,7 @@ public:
 	void setPressed(std::string key);
 	void draw(sf::RenderTarget& window);
 	void keyCheck();
-	void update(float t, Map &m);
-	void Collision(bool axis, Map &m);
+	void update(float t, Map &m, sf::Music& coin);
+	void Collision(bool axis, Map &m, sf::Music& coin);
 };
 

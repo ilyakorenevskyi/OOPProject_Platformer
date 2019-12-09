@@ -91,7 +91,7 @@ int main()
 					window.close();
 				if (event.type == sf::Event::MouseButtonPressed) {
 					if (event.key.code == sf::Mouse::Left) {
-						main_menu.work(pos);
+						main_menu.work(pos,window);
 					}
 				}
 			}

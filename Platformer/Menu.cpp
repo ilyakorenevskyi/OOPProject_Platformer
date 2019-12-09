@@ -24,8 +24,9 @@ Menu::Menu(){
 	title_sprite.setScale(0.25, 0.25);
 	title_sprite.setPosition((480-title_texture.getSize().x*0.25)/2, 0);
 	buttons.push_back(new Button("start", 182,100));
+	buttons.push_back(new Button("exit", 182, 150));
 }
-void Menu::work(sf::Vector2f mouse) {
+void Menu::work(sf::Vector2f mouse,sf::RenderWindow &window) {
 	int clicked=-1;
 	for (int i = 0; i < buttons.size(); i++) {
 		if (buttons[i]->isClicked(mouse)) {
@@ -33,7 +34,8 @@ void Menu::work(sf::Vector2f mouse) {
 		}
 	}
 	switch (clicked) {
-	case(0): open = false;
+	case(0): open = false; break;
+	case(1): window.close(); break;
 	}
 }
 void  Menu::draw(sf::RenderTarget& window) {

@@ -18,7 +18,7 @@ public:
 	std::vector<Button*> buttons;
 	bool open;
 	bool isOpen();
-	void work(sf::Vector2f mouse);
+	void work(sf::Vector2f mouse, sf::RenderWindow& window);
 	void draw(sf::RenderTarget& window);
 	Menu();
 	~Menu();

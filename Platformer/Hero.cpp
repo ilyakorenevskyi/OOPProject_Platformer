@@ -50,7 +50,7 @@ void Hero::keyCheck() {
 	if (pressed_key["Space"]) {
 		if (states == idle || states == walk ) {
 			dy = -0.25;
-			onGround = false;
+			on_ground = false;
 			states = jump;
 		}
 	}
@@ -83,10 +83,10 @@ void Hero::update(float t,Map &m) {
 	animation.reverse(direction);
 	pos.left += dx * t;
 	Collision(1,m);
-	if (!onGround)
+	if (!on_ground)
 		dy += 0.0006 * t;
 	pos.top += dy * t;
-	onGround = false;
+	on_ground = false;
 	Collision(0,m);
 	animation.tick(t);
 	pressed_key["A"] = pressed_key["D"] = pressed_key["Space"] = false;
@@ -118,8 +118,7 @@ void Hero::Collision(bool axis,Map &m) {
 				if (dy > 0) {
 					sound_lib["hurt"]->stop();
 					sound_lib["hurt"]->play();
-					pos.left = 80;
-					pos.top = 220;
+					spawn(m);
 					hp--;
 				}
 				if (dy < 0) {
@@ -131,7 +130,7 @@ void Hero::Collision(bool axis,Map &m) {
 			}
 			if (m.TileMap[j][i] == 'B' && !axis) {
 				if (dy > 0) {
-					pos.top = j * 16 - pos.height + 3;  dy = 0;   onGround = true;
+					pos.top = j * 16 - pos.height + 3;  dy = 0;   on_ground = true;
 				}
 				if (dy < 0) {
 					pos.top = j * 16 + 16;

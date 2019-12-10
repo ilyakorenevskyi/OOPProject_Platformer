@@ -18,7 +18,7 @@ public:
 	bool direction, is_passed;
 	
 	sf::FloatRect pos;
-	bool onGround;
+	bool on_ground;
 	Hero(AnimationControl &anim);
 	int getHP();
 	int getCoins();

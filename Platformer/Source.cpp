@@ -37,21 +37,21 @@ int main()
 	main_theme.play();
 	main_theme.setLoop(true);
 	Clock clock;
-	Font counter_f;
-	counter_f.loadFromFile("files//font.ttf");
-	std::vector <Map> levels;
 	sound_lib["coin"] = new Music;
-	sound_lib["coin"]->openFromFile("files//collect.wav");
 	sound_lib["button"] = new Music;
-	sound_lib["button"]->openFromFile("files//button.wav");
 	sound_lib["hurt"] = new Music;
-	sound_lib["hurt"]->openFromFile("files//hurt.wav");
+	for (auto i : sound_lib) {
+		i.second->openFromFile("files//" + i.first + ".wav");
+	}
 	Menu main_menu;
 	main_menu.setOpen();
+	std::vector <Map> levels;
 	for (int i = 1; i <= 2; i++) {
 		levels.push_back(Map("level" + std::to_string(i)));
 	}
 	sf::Text cristal_count,hp_count,level,press_enter;
+	Font counter_f;
+	counter_f.loadFromFile("files//font.ttf");
 	level.setFont(ouders);
 	level.setScale(0.3, 0.3);
 	level.setCharacterSize(50);
@@ -92,7 +92,7 @@ int main()
 				hero.setPressed("D");
 			}
 			if (Keyboard::isKeyPressed(Keyboard::Space)) {
-				if (hero.onGround) {
+				if (hero.on_ground) {
 					hero.setPressed("Space");
 				}
 			}

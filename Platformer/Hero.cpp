@@ -120,6 +120,7 @@ void Hero::Collision(bool axis,Map &m) {
 					sound_lib["hurt"]->play();
 					spawn(m);
 					hp--;
+					dy = 0;
 				}
 				if (dy < 0) {
 					pos.top = j * 16 + 16;

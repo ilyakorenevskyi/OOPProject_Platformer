@@ -4,9 +4,12 @@
 #include <iostream>
 class Map
 {
+
+	std::string name;
 	friend class Hero;
-	sf::String TileMap[24];
+	std::vector<sf::String> TileMap;
 public:
+	void reset();
 	Map(std::string name);
 	void drawmap(sf::RenderWindow& window);
 };

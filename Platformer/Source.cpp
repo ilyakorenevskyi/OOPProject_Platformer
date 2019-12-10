@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <stdlib.h>
 #include "Hero.h"
 #include "Menu.h"
 #include "Globals.h"
@@ -23,9 +24,9 @@ int main()
 	Font ouders;
 	ouders.loadFromFile("files//font.ttf");
 	AnimationControl hero_anim;
-	hero_anim.create("idle", adventurer_t, IntRect(0, 0, 22, 32), 0.005, 4);
+	hero_anim.create("idle", adventurer_t, IntRect(0, 0, 22, 32), 0.003, 4);
 	hero_anim.create("walk", adventurer_t, IntRect(0, 32, 20, 30), 0.008, 5);
-	hero_anim.create("jump", adventurer_t, IntRect(0, 64, 22, 30), 0.007, 3);
+	hero_anim.create("jump", adventurer_t, IntRect(22, 64, 22, 30), 0.001, 1);
 	forest_t.loadFromFile("files//forest_bg.png");
 	background.setTexture(forest_t);
 	background.setScale(0.5, 0.5);
@@ -42,11 +43,10 @@ int main()
 	Music coin;
 	coin.openFromFile("files//collect.wav");
 	Menu main_menu;
-	main_menu.open = true;
+	main_menu.setOpen();
 	for (int i = 1; i <= 2; i++) {
 		levels.push_back(Map("level" + std::to_string(i)));
 	}
-	int curr_map = 1;
 	sf::Text cristal_count,hp_count;
 	cristal_count.setFont(ouders);
 	hp_count.setFont(ouders);
@@ -58,9 +58,9 @@ int main()
 	cristal_count.setPosition({ 35 ,3});
 	while (window.isOpen())
 	{
-		if (!main_menu.open) {
-			hp_count.setString(std::to_string(hero.hp));
-			cristal_count.setString(std::to_string(hero.coins));
+		if (!main_menu.isOpen()) {
+			hp_count.setString(std::to_string(hero.getHP()));
+			cristal_count.setString(std::to_string(hero.getCoins()));
 			float t = clock.getElapsedTime().asMicroseconds();
 			clock.restart();
 			t = t / 1000;
@@ -68,8 +68,14 @@ int main()
 			sf::Event event;
 			while (window.pollEvent(event))
 			{
+				if (event.type == sf::Event::KeyPressed) {
+					if (event.key.code == sf::Keyboard::Escape && curr_map > 0) {
+						main_menu.setOpen();
+					}
+				}
 				if (event.type == sf::Event::Closed)
 					window.close();
+				
 			}
 			if (Keyboard::isKeyPressed(Keyboard::A)) {
 				hero.setPressed("A");
@@ -77,13 +83,20 @@ int main()
 			if (Keyboard::isKeyPressed(Keyboard::D)) {
 				hero.setPressed("D");
 			}
+			if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+				
+			}
 			if (Keyboard::isKeyPressed(Keyboard::Space)) {
 				if (hero.onGround) {
 					hero.setPressed("Space");
 				}
 			}
-			hero.update(t, levels[curr_map - 1],coin);
 
+			hero.update(t, levels[curr_map -1],coin);
+			if (hero.getHP() == 0) {
+				levels[curr_map-1].reset();
+				hero.reset(levels[curr_map - 1]);
+			}
 			window.draw(background);
 			levels[curr_map - 1].drawmap(window);
 			window.draw(cristal);
@@ -93,18 +106,26 @@ int main()
 			hero.draw(window);
 		}
 		else {
+			
 			sf::Vector2i pixelPos = sf::Mouse::getPosition(window); 
 			sf::Vector2f pos = window.mapPixelToCoords(pixelPos);
 			sf::Event event;
 			while (window.pollEvent(event))
 			{
+				if (event.type == sf::Event::KeyPressed) {
+					if (event.key.code == sf::Keyboard::Escape && curr_map > 0) {
+						main_menu.setClosed();
+					}
+
+				}
 				if (event.type == sf::Event::Closed)
 					window.close();
 				if (event.type == sf::Event::MouseButtonPressed) {
 					if (event.key.code == sf::Mouse::Left) {
-						main_menu.work(pos,window);
+						main_menu.work(pos, window, hero,levels);
 					}
 				}
+				
 			}
 			window.clear();
 			window.draw(background);

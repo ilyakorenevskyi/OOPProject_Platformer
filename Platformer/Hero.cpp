@@ -8,6 +8,27 @@ Hero::Hero(AnimationControl &animation) {
 	dx = 0, dy = 0;
 	this->animation = animation;
 }
+int Hero::getHP() {
+	return hp;
+}
+int Hero::getCoins() {
+	return coins;
+}
+void Hero::reset(Map map) {
+	hp = 3;
+	coins = 0;
+	dx = dy = 0;
+	spawn(map);
+}
+void Hero::spawn(Map map) {
+	for (int i = 0; i < map.TileMap.size(); i++)
+		for (int j = 0; j < map.TileMap[i].getSize(); j++) 
+			if (map.TileMap[i][j] == 'H') {
+				pos.left = j * 16;
+				pos.top = i * 16;
+				return;
+			}
+}
 void Hero::keyCheck() {
 	if (pressed_key["D"]) {
 		dx = 0.1;
@@ -72,8 +93,8 @@ void Hero::update(float t,Map &m,sf::Music &coin) {
 	else offset_y = 0;
 }
 void Hero::Collision(bool axis,Map &m,sf::Music &coin) {
-	for (int j = (pos.top) / 16; j < (pos.top + pos.height - 3) / 16 && j < 24; j++) {
-		for (int i = (pos.left) / 16; i < (pos.left + pos.width ) / 16 && i < m.TileMap[j].getSize(); i++) {
+	for (int j = (pos.top) / 16; j < (pos.top + pos.height - 3) / 16 && j < m.TileMap.size(); j++) {
+		for (int i = (pos.left+3) / 16; i < (pos.left + pos.width-3 ) / 16 && i < m.TileMap[j].getSize(); i++) {
 			if ((m.TileMap[j][i] == 'W' || m.TileMap[j][i] == 'B' || m.TileMap[j][i] == 'I') && axis) //C B он не зайдет на плитку платформы
 			{
 				if (dx > 0) pos.left = i * 16 - pos.width;
@@ -84,6 +105,9 @@ void Hero::Collision(bool axis,Map &m,sf::Music &coin) {
 				coin.stop();
 				coin.play();
 				coins++;
+			}
+			if ((m.TileMap[j][i] == 'e'|| m.TileMap[j][i] == 'E') && axis) {
+				isLevelPassed = true;
 			}
 			if (m.TileMap[j][i] == 'S' && !axis) {
 				if (dy > 0) {

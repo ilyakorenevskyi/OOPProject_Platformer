@@ -40,14 +40,21 @@ int main()
 	Font counter_f;
 	counter_f.loadFromFile("files//font.ttf");
 	std::vector <Map> levels;
-	Music coin;
-	coin.openFromFile("files//collect.wav");
+	sound_lib["coin"] = new Music;
+	sound_lib["coin"]->openFromFile("files//collect.wav");
+	sound_lib["button"] = new Music;
+	sound_lib["button"]->openFromFile("files//button.wav");
+	sound_lib["hurt"] = new Music;
+	sound_lib["hurt"]->openFromFile("files//hurt.wav");
 	Menu main_menu;
 	main_menu.setOpen();
 	for (int i = 1; i <= 2; i++) {
 		levels.push_back(Map("level" + std::to_string(i)));
 	}
-	sf::Text cristal_count,hp_count;
+	sf::Text cristal_count,hp_count,level,press_enter;
+	level.setFont(ouders);
+	level.setScale(0.3, 0.3);
+	level.setCharacterSize(50);
 	cristal_count.setFont(ouders);
 	hp_count.setFont(ouders);
 	hp_count.setScale(0.3, 0.3);
@@ -58,14 +65,15 @@ int main()
 	cristal_count.setPosition({ 35 ,3});
 	while (window.isOpen())
 	{
+		sf::Event event;
 		if (!main_menu.isOpen()) {
 			hp_count.setString(std::to_string(hero.getHP()));
 			cristal_count.setString(std::to_string(hero.getCoins()));
 			float t = clock.getElapsedTime().asMicroseconds();
 			clock.restart();
 			t = t / 1000;
-			if (t > 100) t = 20;
-			sf::Event event;
+			if (t > 100) t = 10;
+			
 			while (window.pollEvent(event))
 			{
 				if (event.type == sf::Event::KeyPressed) {
@@ -83,33 +91,72 @@ int main()
 			if (Keyboard::isKeyPressed(Keyboard::D)) {
 				hero.setPressed("D");
 			}
-			if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-				
-			}
 			if (Keyboard::isKeyPressed(Keyboard::Space)) {
 				if (hero.onGround) {
 					hero.setPressed("Space");
 				}
 			}
 
-			hero.update(t, levels[curr_map -1],coin);
+			hero.update(t, levels[curr_map -1]);
 			if (hero.getHP() == 0) {
 				levels[curr_map-1].reset();
 				hero.reset(levels[curr_map - 1]);
 			}
-			window.draw(background);
-			levels[curr_map - 1].drawmap(window);
-			window.draw(cristal);
-			window.draw(cristal_count);
-			window.draw(heart);
-			window.draw(hp_count);
-			hero.draw(window);
+			if (hero.isLevelPassed()) {
+				window.clear(Color::Black);
+				cristal_count.setString(std::to_string(hero.getCoins()) + " // " + std::to_string(levels[curr_map - 1].totalCristals()));
+				if (curr_map < levels.size()) {
+					levels[curr_map].reset();
+					hero.reset(levels[curr_map]);
+					curr_map++;
+					level.setString("Level " + std::to_string(curr_map - 1) + " finished");
+					level.setPosition((480 - level.getGlobalBounds().width) / 2, 100);
+					
+					window.draw(level);
+					level.setString("Level " +std::to_string(curr_map));
+					level.setPosition((480 - level.getGlobalBounds().width) / 2, 5);
+				}
+				else {
+					level.setString("Game finished");
+					level.setPosition((480 - level.getGlobalBounds().width) / 2, 100);
+					window.clear(Color::Black);
+					window.draw(level);
+					main_menu.setOpen();
+					curr_map = 0;	
+				}
+				hero.is_passed = false;
+				window.draw(cristal);
+				
+				window.draw(cristal_count);
+				window.display();
+				while (1) {
+					window.pollEvent(event);
+					if (event.type == sf::Event::KeyPressed) {
+						if (event.key.code == sf::Keyboard::Enter) {
+							break;
+						}
+					}
+					if (event.type == sf::Event::Closed)
+						window.close();
+				}
+				
+				}
+			else {
+				window.clear();
+				window.draw(background);
+				levels[curr_map - 1].drawmap(window);
+				window.draw(cristal);
+				window.draw(cristal_count);
+				window.draw(heart);
+				window.draw(hp_count);
+				window.draw(level);
+				hero.draw(window);
+			}
 		}
 		else {
 			
 			sf::Vector2i pixelPos = sf::Mouse::getPosition(window); 
 			sf::Vector2f pos = window.mapPixelToCoords(pixelPos);
-			sf::Event event;
 			while (window.pollEvent(event))
 			{
 				if (event.type == sf::Event::KeyPressed) {
@@ -123,6 +170,8 @@ int main()
 				if (event.type == sf::Event::MouseButtonPressed) {
 					if (event.key.code == sf::Mouse::Left) {
 						main_menu.work(pos, window, hero,levels);
+						level.setString("Level " + std::to_string(curr_map));
+						level.setPosition((480 - level.getGlobalBounds().width) / 2, 5);
 					}
 				}
 				

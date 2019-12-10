@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include <iostream>
+extern std::map<std::string, sf::Music*> sound_lib;
 Button::Button(std::string name, int x,int y) {
 	visible = true;
 	this->name = name;
@@ -55,6 +56,8 @@ void Menu::work(sf::Vector2f mouse,sf::RenderWindow &window,Hero &hero,std::vect
 	for (int i = 0; i < buttons.size(); i++) {
 		if (buttons[i]->isClicked(mouse)&&buttons[i]->visible) {
 			clicked = i;
+			sound_lib["button"]->stop();
+			sound_lib["button"]->play();
 		}
 	}
 	switch (clicked) {

@@ -20,6 +20,9 @@ void Hero::reset(Map map) {
 	dx = dy = 0;
 	spawn(map);
 }
+bool Hero::isLevelPassed() {
+	return is_passed;
+}
 void Hero::spawn(Map map) {
 	for (int i = 0; i < map.TileMap.size(); i++)
 		for (int j = 0; j < map.TileMap[i].getSize(); j++) 
@@ -64,7 +67,7 @@ void Hero::draw(sf::RenderTarget& window) {
 void Hero::setPressed(std::string key) {
 	pressed_key[key] = true;
 }
-void Hero::update(float t,Map &m,sf::Music &coin) {
+void Hero::update(float t,Map &m) {
 	keyCheck();
 	if (states == idle) {
 		animation.set("idle");
@@ -79,12 +82,12 @@ void Hero::update(float t,Map &m,sf::Music &coin) {
 	if (dx < 0) direction = -1;
 	animation.reverse(direction);
 	pos.left += dx * t;
-	Collision(1,m,coin);
+	Collision(1,m);
 	if (!onGround)
 		dy += 0.0006 * t;
 	pos.top += dy * t;
 	onGround = false;
-	Collision(0,m,coin);
+	Collision(0,m);
 	animation.tick(t);
 	pressed_key["A"] = pressed_key["D"] = pressed_key["Space"] = false;
 	if (pos.left >= 240)offset_x = pos.left - 480 / 2;
@@ -92,26 +95,30 @@ void Hero::update(float t,Map &m,sf::Music &coin) {
 	if (pos.top >= 136)offset_y = pos.top - 272 / 2;
 	else offset_y = 0;
 }
-void Hero::Collision(bool axis,Map &m,sf::Music &coin) {
+void Hero::Collision(bool axis,Map &m) {
 	for (int j = (pos.top) / 16; j < (pos.top + pos.height - 3) / 16 && j < m.TileMap.size(); j++) {
-		for (int i = (pos.left+3) / 16; i < (pos.left + pos.width-3 ) / 16 && i < m.TileMap[j].getSize(); i++) {
-			if ((m.TileMap[j][i] == 'W' || m.TileMap[j][i] == 'B' || m.TileMap[j][i] == 'I') && axis) //C B он не зайдет на плитку платформы
+		for (int i = (pos.left) / 16; i < (pos.left + pos.width-3 ) / 16 && i < m.TileMap[j].getSize(); i++) {
+			if ((m.TileMap[j][i] == 'W' || m.TileMap[j][i] == 'B' || m.TileMap[j][i] == 'I'||  m.TileMap[j][i] == '0' ) && axis) //C B он не зайдет на плитку платформы
 			{
 				if (dx > 0) pos.left = i * 16 - pos.width;
 				if (dx < 0) pos.left = i * 16 + 16;
 			}
 			if (m.TileMap[j][i] == 'D' && axis) {
 				m.TileMap[j][i] = ' ';
-				coin.stop();
-				coin.play();
+				sound_lib["coin"]->stop();
+				sound_lib["coin"]->play();
 				coins++;
 			}
 			if ((m.TileMap[j][i] == 'e'|| m.TileMap[j][i] == 'E') && axis) {
-				isLevelPassed = true;
+				is_passed = true;
+				if (dx > 0) pos.left = i * 16 - pos.width;
+				if (dx < 0) pos.left = i * 16 + 16;
 			}
 			if (m.TileMap[j][i] == 'S' && !axis) {
 				if (dy > 0) {
-					pos.left = 33;
+					sound_lib["hurt"]->stop();
+					sound_lib["hurt"]->play();
+					pos.left = 80;
 					pos.top = 220;
 					hp--;
 				}

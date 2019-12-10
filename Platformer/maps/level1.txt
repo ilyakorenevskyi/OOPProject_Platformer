@@ -3,18 +3,18 @@ I                                                                 WWWWWWWWWWw
 I                                                                 WWWWWWWWWWw
 I DD                                                              WWWWWWWWWWw
 I D                                                               WWWWWWWWWWw
-IBBBB                                                             WWWWWWWWWWw
-I        BBBBBBBSSSSBSSSSSSBB                                     WWWWWWWWWWw
-I                                 B                               WWWWWWWWWWw
-I                B                    B                           WWWWWWWWWWw
-I             B                                                   WWWWWWWWWWw
-I                                                                 WWWWWWWWWWw
-I                           B     B        B                      WWWWWWWWWWw
-I                       B                                         WWWWWWWWWWw
-I                                                                 WWWWWWWWWWw
-I                    B                                            WWWWWWWWWWw
-I   H  M       DDDDD                                     M                   
-BBBBBBBBBBBBBBBBBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBBBB                                                             WWWWWWWWWWw
+0000     BBBBBBBSSSSBBSSSSSBB                                     WWWWWWWWWWw
+0000                              B                               WWWWWWWWWWw
+0000                                  B                           WWWWWWWWWWw
+0000                                                              WWWWWWWWWWw
+0000                                                              WWWWWWWWWWw
+0000                        B     B        B                      WWWWWWWWWWw
+0000                    B                                         WWWWWWWWWWw
+0000                                                              WWWWWWWWWWw
+0000                 B                                            eWWWWWWWWWw
+0000 H  M       DDDDD                                     M       EWWWWWWWWWW
+0000BBBBBBBBBBBBBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 00000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000

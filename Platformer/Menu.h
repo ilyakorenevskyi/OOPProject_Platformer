@@ -3,6 +3,7 @@
 #include "Hero.h"
 #include "Map.h"
 extern int curr_map;
+extern std::map<std::string, sf::Music*> sound_lib;
 class Button {
 	bool visible;
 	sf::Texture b_texture;

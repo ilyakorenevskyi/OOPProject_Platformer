@@ -61,7 +61,6 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.pch
-*.ipdb
 *.pgc
 *.pgd
 *.rsp
